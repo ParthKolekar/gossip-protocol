@@ -6,8 +6,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +54,7 @@ public class GossipServer implements GossipInterface {
 		
 	public static void main(String[] args) {
 		
-		interval = 10;
+		interval = 2;
 		
 		serverID = Integer.parseInt(args[0]);
 		totalServers = Integer.parseInt(args[1]);
@@ -64,8 +62,8 @@ public class GossipServer implements GossipInterface {
 		
 		String name = Integer.toString(serverID);
 		try {
-			registry = LocateRegistry.getRegistry("localhost");
-			GossipInterface stub = (GossipInterface) UnicastRemoteObject.exportObject(new GossipServer());
+			registry = LocateRegistry.getRegistry();
+			GossipInterface stub = (GossipInterface) UnicastRemoteObject.exportObject(new GossipServer(), 0);
 			registry.rebind(name, stub);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -75,16 +73,13 @@ public class GossipServer implements GossipInterface {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(inputFileName));
 			for (String line; (line = br.readLine()) != null;) {
-				processGossip(line);
 				TimeUnit.SECONDS.sleep(interval);
+				processGossip(line);
 			}
 			br.close();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-
-		while(true);
-		
 	}
 }

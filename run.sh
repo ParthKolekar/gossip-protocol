@@ -65,5 +65,5 @@ done
 
 for i in `seq $TOTAL`
 do
-    ./MyServer $i $TOTAL -i $INPUTFILE.$i
+    ./MyServer $i $TOTAL -i $INPUTFILE.$i & 
 done

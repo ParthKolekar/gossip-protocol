@@ -12,5 +12,5 @@ GossipServer_Stub.class : GossipServer.class
 	javac $^
 	
 clean: 
-	rm -f Message.java GossipServer_Stub.class
+	rm -f Message.java *.class
 	
