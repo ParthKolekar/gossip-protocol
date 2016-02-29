@@ -1,0 +1,13 @@
+package gossip;
+
+option java_package = "com.ds.gossip";
+option java_outer_classname = "GossipRequestProto";
+
+message GossipRequest {
+    message Clock {
+        required int32 timeval = 1 [default = 0];
+        required int32 serverID = 2;
+    }
+	required string msg = 1;
+	required Clock clock = 2;
+}

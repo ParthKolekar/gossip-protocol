@@ -22,4 +22,4 @@ case $1 in
         ;;
 esac
 
-java -classpath .:$CLASSPATH GossipServer $ID $NUMPROCESSES $INPUTFILE
+java -classpath .:./protobuf.jar GossipServer $ID $NUMPROCESSES $INPUTFILE | tee output.txt.$ID

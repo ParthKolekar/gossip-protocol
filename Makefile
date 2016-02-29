@@ -1,16 +1,16 @@
-.PHONY: Message.java GossipServer_stub.class
+.PHONY : clean all
 
-all : Message.java GossipServer_Stub.class
+all : com/ds/gossip/GossipRequestProto.class GossipServer_Stub.class
 
-Message.java : message.proto
-	protoc --java_out=. message.proto
+com/ds/gossip/GossipRequestProto.java : gossip.proto
+	protoc --java_out=. gossip.proto
 	
 GossipServer_Stub.class : GossipServer.class
 	rmic GossipServer
-	
+
 %.class : %.java
-	javac $^
+	javac $^ -classpath .:./protobuf.jar
 	
 clean: 
-	rm -f Message.java *.class
+	rm -rf com/ *.class
 	

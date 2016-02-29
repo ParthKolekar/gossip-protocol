@@ -1,7 +1,0 @@
-message hearGossipRequest {
-    message Clock {
-        required int32 timeval = 1 [default = 0];
-    }
-	required string msg = 1;
-	required Clock clock = 2;
-}
