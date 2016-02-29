@@ -1,0 +1,25 @@
+#! /bin/bash
+
+_usage() {
+    echo "USAGE: $0 ID NUMPROCESSES [-i INPUTFILE]"
+}
+
+if [[ $# < 2 ]]
+then
+    _usage
+    exit
+fi
+
+INPUTFILE="input.txt"
+ID="$1"
+shift
+NUMPROCESSES="$1"
+shift
+case $1 in 
+    -i)
+        INPUTFILE="$2"
+        shift
+        ;;
+esac
+
+java -classpath .:$CLASSPATH GossipServer $ID $NUMPROCESSES $INPUTFILE
