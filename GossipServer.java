@@ -6,6 +6,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 
@@ -27,35 +30,31 @@ public class GossipServer implements GossipInterface {
 			
 		//}
 		currentMessage = new GossipMessage(bytes);
-		System.err.println("test hearGossip");
-		System.err.println(bytes);
+		System.err.println(serverID);
+		System.err.println(new String(bytes));
 	}
 	
 	private static void processGossip(String message) throws RemoteException {
-		// TODO Send this string to two remote hearGossip methods
-		String firstServer = Integer.toString(serverID);
+		int serverID1 = ThreadLocalRandom.current().nextInt(1, totalServers + 1);
+		String firstServer = Integer.toString(serverID1);
 		try {
 			GossipInterface clientStub = (GossipInterface) registry.lookup(firstServer);
-			clientStub.hearGossip("".getBytes());
+			clientStub.hearGossip(message.getBytes());
 		} catch (NotBoundException e) {
 			System.err.println("Not bound method : " + firstServer);
 		}
 		
-		String secondServer = Integer.toString(serverID);
+		int serverID2 = ThreadLocalRandom.current().nextInt(1, totalServers + 1);		
+		String secondServer = Integer.toString(serverID2);
 		try {
 			GossipInterface clientStub = (GossipInterface) registry.lookup(secondServer);
-			clientStub.hearGossip("".getBytes());
+			clientStub.hearGossip(message.getBytes());
 		} catch (NotBoundException e) {
 			System.err.println("Not bound method : " + secondServer);
 		}
 	}
 		
 	public static void main(String[] args) {
-	
-		if (args.length != 3) {
-			System.err.println("Invalid Usage");
-			System.exit(-1);
-		}
 		
 		interval = 10;
 		
